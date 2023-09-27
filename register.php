@@ -2,7 +2,7 @@
 <?php include 'includes/header.php'; ?>
 
 <?php 
-    $first_name = $last_name = $email = $password = $repassword = $birthdate = '';
+    $first_name = $last_name = $email = $password = $repassword = $birthdate = $gender = '';
     $repasswordError = $emailError = '';
     $viewModal = false;
 
@@ -10,6 +10,9 @@
     if(isset($_POST['login'])){
         $first_name = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $last_name = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $birthdate = $_POST['birthdate'];
+        $gender = $_POST['gender'];
+
         //Check Email Validity
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $query = "SELECT * FROM accounts WHERE email LIKE '$email'";
@@ -29,7 +32,7 @@
 
         //Insert new Account
         if(empty($emailError) && empty($repasswordError)){
-            $query = "INSERT INTO accounts (first_name, last_name, email, password) VALUES('$first_name', '$last_name', '$email', '$password')";
+            $query = "INSERT INTO accounts (first_name, last_name, birthdate, gender, email, password) VALUES('$first_name', '$last_name', '$birthdate', '$gender', '$email', '$password')";
 
             if(mysqli_query($conn, $query)){
                 //Success
@@ -99,15 +102,15 @@
                     <div class="row g-1 mb-3">
                         <div class="col-sm-6">
                             <label for="birthdate" class="form-label">Birthdate</label>
-                            <input type="date" class="form-control" id="birthdate">
+                            <input type="date" class="form-control" id="birthdate" name="birthdate" required>
                         </div>
 
                         <div class="col-sm-6">
-                            <label for="gender">Sex</label>
-                            <select class="form-select mt-1" aria-label="Default select example" id="gender">
-                                <option selected value="1">Male</option>
-                                <option value="2">Female</option>
-                                <option value="3">Secret</option>
+                            <label for="gender">Gender</label>
+                            <select class="form-select mt-1" id="gender" name="gender">
+                                <option selected value="m">Male</option>
+                                <option value="f">Female</option>
+                                <option value="s">Secret</option>
                             </select>
                         </div>
                         
